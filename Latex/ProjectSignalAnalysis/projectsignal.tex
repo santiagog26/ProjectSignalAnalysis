@@ -89,8 +89,7 @@ Los \textit{datos abiertos} del gobierno de Colombia nos permitió acceder a la 
 
 \section{Resultados}
 \label{sec:results}
-Para el uso de \textit{sodapy} para acceder a \texttt{Socrata}, escribimos las siguientes líneas
-
+Para el uso de \textit{sodapy} para acceder a \texttt{Socrata}, escribimos las siguientes líneas, obteniendo así las $100000$ primeras filas de la tabla
 \begin{lstlisting}[language=python]
 from sodapy import Socrata
 import pandas as pd
@@ -100,7 +99,7 @@ from collections import Counter
 
 
 client = Socrata("www.datos.gov.co", None) #Se determina la dirección de la cual se extraerán los datos
-results = client.get("gt2j-8ykr", limit=700000) #Se obtienen los datos y se establece un límite
+results = client.get("gt2j-8ykr", limit=100000) #Se obtienen los datos y se establece un límite
 
 # Convertir a dataframe de pandas
 results_df = pd.DataFrame.from_records(results)
