@@ -44,34 +44,42 @@ local1 = local1.drop([14], axis=0)
 local1 = local1.reset_index(drop=True)
 gdf['No. Casos'] = local1['No. Casos']
 
+bins = [0, 9, 19, 29, 39, 49, 59,69,79,89] #Se establecen los intervalos 
+names = ["0-9","10-19","20-29","30-39","40-49","50-59","60-69","70-79","80-89"] #Se establecen los nombres de los intervalores
+bta_df["EDAD"] = bta_df["EDAD"].astype(float)
+bta_df["EDAD"] = pd.cut(bta_df["EDAD"],bins,labels=names)
 genero_ob=bta_df.groupby(['EDAD','SEXO']).size()
 genero_ob=genero_ob.reset_index()
 
 app = dash.Dash()
 
 fig = px.bar(local, x='Localidades', y='No. Casos')
-fig2 = px.bar(genero_ob, x='EDAD', color='SEXO', title='Género y edad')
+fig2 = px.bar(genero_ob, x='EDAD', y=0, color='SEXO', title='Género y edad')
 
 app.title = 'Dash covid'
 
-app.layout = html.Div(
-    html.Div([
-        html.H1(children='Hello there :D'),
-
-        html.Div(children='''
-        Dash: A web application framework for python
+app.layout = html.Div([
+    html.Div(
+        className='app-header',
+        children=[
+            html.Div('Data covid', className="app-header--title")
+        ]
+    ),
+    
+    html.Div(children='''
+        A web application for show the information of Covid in Colombia
         '''),
 
-        dcc.Graph(
-            id='localidades_graph',
-            figure=fig
-        ),
+    dcc.Graph(
+        id='localidades_graph',
+        figure=fig
+    ),
 
-        dcc.Graph(
-            id='edad_sexo_graph',
-            figure=fig2
-        )
-    ])
+    dcc.Graph(
+        id='edad_sexo_graph',
+        figure=fig2
+    )
+]
 )
 
 if __name__ == '__main__':
