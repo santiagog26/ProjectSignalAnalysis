@@ -67,6 +67,16 @@ df1['No. Casos']=d.values() #Se extrae la frecuencia de cada elemento único
 df1=df1.sort_values(by='Mes') #Se ordenan según la fecha 
 df1.columns
 
+#-------------------------------------------------------
+
+fecha=[]
+fecha=df['fecha_de_notificaci_n']
+d=Counter(fecha)
+df_fechas = pd.DataFrame()
+df_fechas['Fecha']=d.keys()
+df_fechas['No. Casos']=d.values()
+df_fechas=df_fechas.sort_values(by='Fecha',ascending=False) #Se ordenan según la fecha
+
 #--------------------------------------------------
 
 y=[]
@@ -146,6 +156,7 @@ fig3 = px.pie(df3, values='No. Casos' , names='Tipo',title='Casos Totales por ti
 fig4 = px.pie(df4, values='No. Casos' , names='Estado',title='Estado de los pacientes')
 fig6 = px.bar(df6,  x='Pais de Procedencia', y='No. Casos',title='País de Procedencia')
 fig7 = px.line(df5,  x=x, y=y,title='Fallecimientos')
+fig8 = px.line(df_fechas, x='Fecha', y='No. Casos', title='Evolución de casos')
 
 app.title = 'Dash covid'
  
@@ -183,6 +194,10 @@ app.layout = html.Div(
             id='falle',
             figure=fig7
         ),
+        dcc.Graph(
+            id='evolucion',
+            figure=fig8
+        )
     ])
 )
 
